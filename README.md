@@ -1,3 +1,7 @@
+#### Usage  
+python FlaskTemplater.py /path/to/project
+
+#### Description
 Creates a Flask project in a user specified folder.  
 It does not create a virtualenv or install any dependencies.  
 The folder structure is as follows:  
