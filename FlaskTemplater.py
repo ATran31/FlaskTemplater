@@ -54,10 +54,10 @@ class FlaskTemplater:
             file_content = '\
 from flask import Flask\n\
 #from flask_sqlalchemy import SQLAlchemy\n\
-#from flask_migration import Migration\n\
+#from flask_migration import Migrate\n\
 #from flask_login import LoginManager\n\n\
 app = Flask(__name__)\n\
-# generate the secret key using os.urrandom(24) then pasting the result in here\n\
+# generate the secret key using os.urandom(24) then pasting the result in here\n\
 #app.secret_key = \'<your-secret-key>\'\n\
 #app.config.from_pyfile(\'config.py\')\n\n\
 # remove below if not using a database\n\
