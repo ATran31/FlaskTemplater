@@ -80,20 +80,20 @@ class FlaskTemplater:
         Creates the app_pkg package __init__ file.
         '''
         with open(os.path.join(self.pkg_dir, '__init__.py'), 'w') as file:
-            file_content = 'from flask import Flask\n#from flask_sqlalchemy import SQLAlchemy\n#from flask_migration import Migration\n#from flask_login import LoginManager\n\napp = Flask(__name__)\n# generate the secret key using os.urrandom(24) then pasting the result in here\n#app.secret_key = \'<your-secret-key>\'\n#app.config.from_pyfile(\'config.py\')\n\n# remove below if not using a database\n#db = SQLAlchemy(app)\n#migrate = Migrate(app, db)\n\n#lm = LoginManager()\n#lm.login_view = \'login\'\n#lm.init_app(app)\n\nfrom app_pkg import views, models\n'
+            file_content = 'from flask import Flask\n#from flask_sqlalchemy import SQLAlchemy\n#from flask_migration import Migration\n#from flask_login import LoginManager\n\napp = Flask(__name__)\n# generate the secret key using os.urrandom(24) then pasting the result in here\n#app.secret_key = \'<your-secret-key>\'\n#app.config.from_pyfile(\'config.py\')\n\n# remove below if not using a database\n#db = SQLAlchemy(app)\n#migrate = Migrate(app, db)\n\n#lm = LoginManager()\n#lm.login_view = \'login\'\n#lm.init_app(app)\n\n#from app_pkg import views, models\n'
             file.write(file_content)
 
             if self.use_blueprints:
-                blueprint = '# register index page blueprint\n#from app_pkg.bp_index import bp as map_bp\n#app.register_blueprint(map_bp)\n'
+                blueprint = '# register blueprint\n#from app_pkg.my_blueprint import bp as my_bp\n#app.register_blueprint(my_bp)\n'
                 file.write(blueprint)
         print('Created app __init__ file...\n')
 
     def make_bp_init_file(self):
         '''
-        Creates the __init__ file for the bp_index package.
+        Creates the __init__ file for the blueprint template.
         '''
         with open(os.path.join(self.bp_dir, '__init__.py'), 'w') as file:
-            file_content = 'from flask import Blueprint\n\n#This blueprint contains all the index page related components. Primarily it just renders the index.html page.\nbp = Blueprint(\'map\', __name__, template_folder=\'templates\', static_folder=\'static\', static_url_path=\'/map/static\')\n\n'
+            file_content = 'from flask import Blueprint\n\n#This blueprint contains my_blueprint page related components.\nbp = Blueprint(\'my_blueprint\', __name__, template_folder=\'templates\', static_folder=\'static\', static_url_path=\'/my_blueprint/static\')\n\n'
             file.write(file_content)
             print('Created blueprint __init__ file...\n')
 
