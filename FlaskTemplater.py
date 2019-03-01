@@ -144,7 +144,8 @@ class FlaskTemplater:
         self.make_folders()
         self.make_run_file()
         self.make_app_init_file()
-        self.make_views_file()
+        if not self.use_blueprints:
+            self.make_views_file()
         self.make_template_file()
         if self.use_blueprints:
             self.make_bp_init_file()
