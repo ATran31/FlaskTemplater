@@ -8,6 +8,7 @@ Create a generic project
 
 `python FlaskTemplater.py /path/to/project`
 
+##### Options
 Include a sample blueprint
 
 `python FlaskTemplater.py /path/to/project --use-blueprints`
