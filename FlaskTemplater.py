@@ -76,7 +76,11 @@ class FlaskTemplater:
 
     def make_run_file(self):
         with open(os.path.join(self.proj_folder, 'run.py'), 'w') as file:
-            run_file = 'from app_pkg import app\n\n# uncomment below to run in development mode, no connection from other machines allowed\n#app.run(debug=True)\n\n# uncomment below to allow connection from other devices on local network\n#app.run(host=\'0.0.0.0\', threaded=True, debug=True)'
+            run_file = f'from app_pkg import app\n\n' \
+                f'# uncomment below to run in development mode, no connection from other machines allowed\n' \
+                f'#app.run(debug=True)\n\n' \
+                f'# uncomment below to allow connection from other devices on local network\n' \
+                f'#app.run(host=\'0.0.0.0\', threaded=True, debug=True)\n'
             file.write(run_file)
 
     def make_app_init_file(self):
@@ -84,11 +88,26 @@ class FlaskTemplater:
         Creates the app_pkg package __init__ file.
         '''
         with open(os.path.join(self.pkg_dir, '__init__.py'), 'w') as file:
-            file_content = 'from flask import Flask\n#from flask_sqlalchemy import SQLAlchemy\n#from flask_migration import Migration\n#from flask_login import LoginManager\n\napp = Flask(__name__)\n# generate the secret key using os.urrandom(24) then pasting the result in here\n#app.secret_key = \'<your-secret-key>\'\n#app.config.from_pyfile(\'config.py\')\n\n# remove below if not using a database\n#db = SQLAlchemy(app)\n#migrate = Migrate(app, db)\n\n#lm = LoginManager()\n#lm.login_view = \'login\'\n#lm.init_app(app)\n\n#from app_pkg import views, models\n'
+            file_content = f'from flask import Flask\n' \
+                f'#from flask_sqlalchemy import SQLAlchemy\n' \
+                f'#from flask_migration import Migration\n' \
+                f'#from flask_login import LoginManager\n\n' \
+                f'app = Flask(__name__)\n' \
+                f'# generate the secret key using os.urrandom(24) then pasting the result in here\n' \
+                f'#app.secret_key = \'<your-secret-key>\'\n' \
+                f'#app.config.from_pyfile(\'config.py\')\n\n' \
+                f'# remove below if not using a database\n' \
+                f'#db = SQLAlchemy(app)\n#' \
+                f'migrate = Migrate(app, db)\n\n' \
+                f'#lm = LoginManager()\n' \
+                f'#lm.login_view = \'login\'\n#lm.init_app(app)\n\n' \
+                f'#from app_pkg import views, models\n'
             file.write(file_content)
 
             if self.use_blueprints:
-                blueprint = '# register blueprint\n#from app_pkg.my_blueprint import bp as my_bp\n#app.register_blueprint(my_bp)\n'
+                blueprint = f'# register blueprint\n' \
+                    f'#from app_pkg.my_blueprint import bp as my_bp\n' \
+                    f'#app.register_blueprint(my_bp)\n'
                 file.write(blueprint)
         print('Created app __init__ file...\n')
 
@@ -97,7 +116,9 @@ class FlaskTemplater:
         Creates the __init__ file for the blueprint template.
         '''
         with open(os.path.join(self.bp_dir, '__init__.py'), 'w') as file:
-            file_content = 'from flask import Blueprint\n\n#This blueprint contains my_blueprint page related components.\nbp = Blueprint(\'my_blueprint\', __name__, template_folder=\'templates\', static_folder=\'static\', static_url_path=\'/my_blueprint/static\')\n\n'
+            file_content = f'from flask import Blueprint\n\n' \
+                f'# This blueprint contains my_blueprint page related components.\n' \
+                f'bp = Blueprint(\'my_blueprint\', __name__, template_folder=\'templates\', static_folder=\'static\', static_url_path=\'/my_blueprint/static\')\n'
             file.write(file_content)
             print('Created blueprint __init__ file...\n')
 
@@ -106,7 +127,21 @@ class FlaskTemplater:
         Creates the app configuration file. This file contains definitions for database connections, migrations, and other infrastructure type settings.
         '''
         with open(os.path.join(self.pkg_dir, 'config.py'), 'w') as file:
-            file_content = '#import os\n# uncomment below if using a database\n#DB_URL = os.environ.get(\'DB_URL\')\n#DB_USER = os.environ.get(\'DB_USER\')\n#DB_PW = os.environ.get(\'DB_PW\')\n#DB_NAME = os.environ.get(\'DB_NAME\')\n#DB = \'postgresql+psycopg2://{user}:{pw}@{url}/{db}\'.format(user=DB_USER, pw=DB_PW, url=DB_URL,db=DB_NAME)\n#SQLALCHEMY_DATABASE_URI = DB or \'sqlite:///\' + os.path.join(basedir, \'app.db\')\n# uncomment below if using flask-migrate for database migration\n# define the database migration data files directory\n#basedir = os.path.abspath(os.path.dirname(__file__))\n#SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, \'db_repository\')\n#SQLALCHEMY_TRACK_MODIFICATIONS = False\n\n# define redis connection\n#REDIS_URL = os.environ.get(\'REDIS_URL\')'
+            file_content = f'#import os\n\n' \
+                f'# uncomment below if using a database\n' \
+                f'#DB_URL = os.environ.get(\'DB_URL\')\n' \
+                f'#DB_USER = os.environ.get(\'DB_USER\')\n' \
+                f'#DB_PW = os.environ.get(\'DB_PW\')\n' \
+                f'#DB_NAME = os.environ.get(\'DB_NAME\')\n' \
+                f'#DB = f\'postgresql+psycopg2://{{DB_USER}}:{{DB_PW}}@{{DB_URL}}/{{DB_NAME}}\'\n' \
+                f'#SQLALCHEMY_DATABASE_URI = DB or \'sqlite:///\' + os.path.join(basedir, \'app.db\')\n\n' \
+                f'# uncomment below if using flask-migrate for database migration\n' \
+                f'# define the database migration data files directory\n' \
+                f'#basedir = os.path.abspath(os.path.dirname(__file__))\n' \
+                f'#SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, \'db_repository\')\n' \
+                f'#SQLALCHEMY_TRACK_MODIFICATIONS = False\n\n' \
+                f'# define redis connection\n' \
+                f'#REDIS_URL = os.environ.get(\'REDIS_URL\')'
             file.write(file_content)
         print('Created configuration file...\n')
 
@@ -115,7 +150,14 @@ class FlaskTemplater:
         Create file to define form classes.
         '''
         with open(os.path.join(self.pkg_dir, 'forms.py'), 'w') as file:
-            file_content = '#from flask_wtf import FlaskForm\n#from wtforms import StringField, PasswordField, SubmitField\n#from wtforms.validators import Email, DataRequired\n\n#class SignInForm(FlaskForm):\n#    email = StringField(\'email\', validators=[DataRequired(), Email()])\n#    password = PasswordField(\'password\', validators=[DataRequired()])\n#    submit = SubmitField("Sign In")\n\n# define other classes...'
+            file_content = f'#from flask_wtf import FlaskForm\n' \
+                f'#from wtforms import StringField, PasswordField, SubmitField\n' \
+                f'#from wtforms.validators import Email, DataRequired\n\n' \
+                f'#class SignInForm(FlaskForm):\n' \
+                f'#    email = StringField(\'email\', validators=[DataRequired(), Email()])\n' \
+                f'#    password = PasswordField(\'password\', validators=[DataRequired()])\n' \
+                f'#    submit = SubmitField("Sign In")\n\n' \
+                f'# define other classes...\n'
             file.write(file_content)
         print('Created forms file...\n')
 
@@ -124,7 +166,14 @@ class FlaskTemplater:
         Create the models file to define database object models.
         '''
         with open(os.path.join(self.pkg_dir, 'models.py'), 'w') as file:
-            file_content = '#from app_pkg import db\n# include below to use existing tables without having to define the schema\n# db.Model.metadata.reflect(db.engine)\n\n# define model classes...\n#class <ClassName>(db.Model):\n#    __table__ = db.Model.metadata.tables[\'<table-name>\']\n#    def __repr__(self):\n#    return \'<<repr-str> {}>\'.format(self.<some-field>)\n'
+            file_content = f'#from app_pkg import db\n' \
+                f'# include below to use existing tables without having to define the schema\n' \
+                f'#db.Model.metadata.reflect(db.engine)\n\n' \
+                f'# define model classes...\n' \
+                f'#class ClassName(db.Model):\n' \
+                f'#    __table__ = db.Model.metadata.tables[\'table-name\']\n' \
+                f'#    def __repr__(self):\n' \
+                f'#        return \'<repr-str{{}}>\'.format(self.some-field)\n'
             file.write(file_content)
         print('Created models file...\n')
 
@@ -133,7 +182,17 @@ class FlaskTemplater:
         Create file to hold app views/routes.
         '''
         with open(os.path.join(self.pkg_dir, 'views.py'), 'w') as file:
-            file_content = '# remove db and lm if not using database or login manager\nfrom app_pkg import app, db, lm\nfrom flask import render_template, flash, redirect, url_for, request\n# uncomment to enable user authentication\n#from flask_login import login_user, logout_user, current_user, login_required\n#from .models import your, models\n#from .forms import your, forms\n\n# uncomment to enable user authentication\n#@lm.user_loader\n#def load_user(email):\n#    return User.query.filter_by(email=email).first()\n'
+            file_content = f'# remove db and lm if not using database or login manager\n' \
+                f'from app_pkg import app, db, lm\n' \
+                f'from flask import render_template, flash, redirect, url_for, request\n' \
+                f'# uncomment to enable user authentication\n' \
+                f'#from flask_login import login_user, logout_user, current_user, login_required\n' \
+                f'#from .models import your, models\n' \
+                f'#from .forms import your, forms\n\n' \
+                f'# uncomment to enable user authentication\n' \
+                f'#@lm.user_loader\n' \
+                f'#def load_user(email):\n' \
+                f'#    return User.query.filter_by(email=email).first()\n'
             file.write(file_content)
         print('Created views file...\n')
 
