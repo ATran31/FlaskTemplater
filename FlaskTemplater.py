@@ -26,7 +26,7 @@ import os
 import argparse
 
 
-class FlaskTemplater:
+class ProjectTemplate:
     def __init__(self, script_mode=True, **kwargs):
         if script_mode:
             parser = argparse.ArgumentParser()
@@ -234,5 +234,5 @@ class FlaskTemplater:
 
 
 if __name__ == '__main__':
-    FT = FlaskTemplater()
-    FT.make_project()
+    project = ProjectTemplate()
+    project.make_project()
