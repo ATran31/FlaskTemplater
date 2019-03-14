@@ -3,48 +3,38 @@ Creates a Flask project in a user specified folder.
 Creates in the script directory if user does not supply a project path.
 It does not create a virtualenv or install any dependencies.
 
-#### Usage
-Get help with usage and options:
+#### Use as a script
+```
+usage: FlaskTemplater.py [-h] [-b] [-c] [-f] [-m] [project_folder]
 
-`python FlaskTemplater.py -h`
+positional arguments:
+  project_folder        The folder where this project will be initialized.
+                        Uses the same directory as this script if no project
+                        folder is given.
 
-Create a generic project:
+optional arguments:
+  -h, --help            show this help message and exit
+  -b, --use-blueprints  Include a Flask blueprints template.
+  -c, --include-configs
+                        Include a Flask configuration file template.
+  -f, --include-forms   Include a Flask form template.
+  -m, --include-models  Include a database model definition template.
+```
+#### Use as a module
+The `script_mode` argument is REQUIRED and must be set to `False` when using as a module. All other arguments are optional. If `project_folder` argument is not specified, the output directory the same directory as the script.
 
-`python FlaskTemplater.py /path/to/project`
+```
+from FlaskTemplater import ProjectTemplate
 
-##### Options
-###### Include a sample blueprint
+my_project = ProjectTemplate(script_mode=False, \
+    project_folder="test", \
+    use_blueprints=True, \
+    include_models=True, \
+    include_forms=True, \
+    include_configs=True)
+my_project.make_project()
 
-`python FlaskTemplater.py --use-blueprints /path/to/project`
-
-or using short form
-
-`python FlaskTemplater.py -b /path/to/project`
-
-###### Include model definitions
-
-`python FlaskTemplater.py --include-models /path/to/project`
-
-or using short form
-
-`python FlaskTemplater.py -m /path/to/project`
-
-###### Include form definitions
-
-`python FlaskTemplater.py --include-forms /path/to/project`
-
-or using short form
-
-`python FlaskTemplater.py -f /path/to/project`
-
-###### Include a configuration file
-
-`python FlaskTemplater.py --include-configs /path/to/project`
-
-or using short form
-
-`python FlaskTemplater.py -c /path/to/project`
-
+```
 
 #### The output folder structure is as follows:
 ```
