@@ -27,35 +27,52 @@ import argparse
 
 
 class FlaskTemplater:
-    def __init__(self):
-        parser = argparse.ArgumentParser()
-        parser.add_argument("proj_folder", nargs="?", default=os.path.dirname(os.path.realpath(__file__)), help="The folder where this project will be initialized. Uses the same directory as this script if no project folder is given.")
-        parser.add_argument("-b", "--use-blueprints", action="store_true", help="Include a Flask blueprints template.")
-        parser.add_argument("-c", "--include-configs", action="store_true", help="Include a Flask configuration file template.")
-        parser.add_argument("-f", "--include-forms", action="store_true", help="Include a Flask form template.")
-        parser.add_argument("-m", "--include-models", action="store_true", help="Include a database model definition template.")
-        args = parser.parse_args()
+    def __init__(self, script_mode=True, **kwargs):
+        if script_mode:
+            parser = argparse.ArgumentParser()
+            parser.add_argument("proj_folder", nargs="?", default=os.path.dirname(os.path.realpath(__file__)), help="The folder where this project will be initialized. Uses the same directory as this script if no project folder is given.")
+            parser.add_argument("-b", "--use-blueprints", action="store_true", help="Include a Flask blueprints template.")
+            parser.add_argument("-c", "--include-configs", action="store_true", help="Include a Flask configuration file template.")
+            parser.add_argument("-f", "--include-forms", action="store_true", help="Include a Flask form template.")
+            parser.add_argument("-m", "--include-models", action="store_true", help="Include a database model definition template.")
 
-        self.proj_folder = args.proj_folder
-        self.use_blueprints = args.use_blueprints
-        self.include_configs = args.include_configs
-        self.include_forms = args.include_forms
-        self.include_models = args.include_models
+            args = parser.parse_args()
+
+            self.proj_folder = args.proj_folder
+            self.use_blueprints = args.use_blueprints
+            self.include_configs = args.include_configs
+            self.include_forms = args.include_forms
+            self.include_models = args.include_models
+
+        else:
+            # default all options to false unless changed in kwargs
+            self.use_blueprints = False
+            self.include_configs = False
+            self.include_forms = False
+            self.include_models = False
+            for k, v in kwargs.items():
+                # ignore irrelevant args
+                if k in ['proj_folder', 'use_blueprints', 'include_models', 'include_configs', 'include_forms']:
+                    setattr(self, k, v)
+
+            # if proj_folder is not defined, default to current directory
+            if not hasattr(self, 'proj_folder'):
+                self.proj_folder = os.path.dirname(os.path.realpath(__file__))
 
         self.pkg_dir = os.path.join(self.proj_folder, 'app_pkg')
         self.templates_dir = os.path.join(self.pkg_dir, 'templates')
         self.static_dir = os.path.join(self.pkg_dir, 'static')
         self.bp_dir = os.path.join(self.pkg_dir, 'my_blueprint')
 
-    def make_folders(self):
+    def make_folders(self, pkg_dir, templates_dir, static_dir):
         # create the main package folder
-        os.mkdir(self.pkg_dir)
+        os.makedirs(pkg_dir)
         # create templates folder
-        os.mkdir(self.templates_dir)
+        os.mkdir(templates_dir)
         # create static folders
         static_fols = ['css', 'js']
         for fol in static_fols:
-            os.makedirs(os.path.join(self.static_dir, fol))
+            os.makedirs(os.path.join(static_dir, fol))
 
         # create the an index blueprint if the --use-blueprint option was set
         if self.use_blueprints:
@@ -64,12 +81,13 @@ class FlaskTemplater:
                 os.makedirs(os.path.join(self.bp_dir, fol))
                 if fol == 'static':
                     for fol in static_fols:
-                        os.makedirs(os.path.join(self.bp_dir, 'static', fol))
+                        bp_dir = os.path.join(pkg_dir, 'my_blueprint')
+                        os.makedirs(os.path.join(bp_dir, 'static', fol))
 
         print('Created project folders...\n')
 
-    def make_run_file(self):
-        with open(os.path.join(self.proj_folder, 'run.py'), 'w') as file:
+    def make_run_file(self, proj_folder):
+        with open(os.path.join(proj_folder, 'run.py'), 'w') as file:
             run_file = f'from app_pkg import app\n\n' \
                 f'# uncomment below to run in development mode, no connection from other machines allowed\n' \
                 f'#app.run(debug=True)\n\n' \
@@ -77,11 +95,11 @@ class FlaskTemplater:
                 f'#app.run(host=\'0.0.0.0\', threaded=True, debug=True)\n'
             file.write(run_file)
 
-    def make_app_init_file(self):
+    def make_app_init_file(self, pkg_dir):
         '''
         Creates the app_pkg package __init__ file.
         '''
-        with open(os.path.join(self.pkg_dir, '__init__.py'), 'w') as file:
+        with open(os.path.join(pkg_dir, '__init__.py'), 'w') as file:
             file_content = f'from flask import Flask\n' \
                 f'#from flask_sqlalchemy import SQLAlchemy\n' \
                 f'#from flask_migration import Migration\n' \
@@ -105,22 +123,22 @@ class FlaskTemplater:
                 file.write(blueprint)
         print('Created app __init__ file...\n')
 
-    def make_bp_init_file(self):
+    def make_bp_init_file(self, bp_dir):
         '''
         Creates the __init__ file for the blueprint template.
         '''
-        with open(os.path.join(self.bp_dir, '__init__.py'), 'w') as file:
+        with open(os.path.join(bp_dir, '__init__.py'), 'w') as file:
             file_content = f'from flask import Blueprint\n\n' \
                 f'# This blueprint contains my_blueprint page related components.\n' \
                 f'bp = Blueprint(\'my_blueprint\', __name__, template_folder=\'templates\', static_folder=\'static\', static_url_path=\'/my_blueprint/static\')\n'
             file.write(file_content)
             print('Created blueprint __init__ file...\n')
 
-    def make_config_file(self):
+    def make_config_file(self, pkg_dir):
         '''
         Creates the app configuration file. This file contains definitions for database connections, migrations, and other infrastructure type settings.
         '''
-        with open(os.path.join(self.pkg_dir, 'config.py'), 'w') as file:
+        with open(os.path.join(pkg_dir, 'config.py'), 'w') as file:
             file_content = f'#import os\n\n' \
                 f'# uncomment below if using a database\n' \
                 f'#DB_URL = os.environ.get(\'DB_URL\')\n' \
@@ -139,11 +157,11 @@ class FlaskTemplater:
             file.write(file_content)
         print('Created configuration file...\n')
 
-    def make_forms_file(self):
+    def make_forms_file(self, pkg_dir):
         '''
         Create file to define form classes.
         '''
-        with open(os.path.join(self.pkg_dir, 'forms.py'), 'w') as file:
+        with open(os.path.join(pkg_dir, 'forms.py'), 'w') as file:
             file_content = f'#from flask_wtf import FlaskForm\n' \
                 f'#from wtforms import StringField, PasswordField, SubmitField\n' \
                 f'#from wtforms.validators import Email, DataRequired\n\n' \
@@ -155,11 +173,11 @@ class FlaskTemplater:
             file.write(file_content)
         print('Created forms file...\n')
 
-    def make_models_file(self):
+    def make_models_file(self, pkg_dir):
         '''
         Create the models file to define database object models.
         '''
-        with open(os.path.join(self.pkg_dir, 'models.py'), 'w') as file:
+        with open(os.path.join(pkg_dir, 'models.py'), 'w') as file:
             file_content = f'#from app_pkg import db\n' \
                 f'# include below to use existing tables without having to define the schema\n' \
                 f'#db.Model.metadata.reflect(db.engine)\n\n' \
@@ -171,11 +189,11 @@ class FlaskTemplater:
             file.write(file_content)
         print('Created models file...\n')
 
-    def make_views_file(self):
+    def make_views_file(self, pkg_dir):
         '''
         Create file to hold app views/routes.
         '''
-        with open(os.path.join(self.pkg_dir, 'views.py'), 'w') as file:
+        with open(os.path.join(pkg_dir, 'views.py'), 'w') as file:
             file_content = f'# remove db and lm if not using database or login manager\n' \
                 f'from app_pkg import app, db, lm\n' \
                 f'from flask import render_template, flash, redirect, url_for, request\n' \
@@ -190,28 +208,28 @@ class FlaskTemplater:
             file.write(file_content)
         print('Created views file...\n')
 
-    def make_template_file(self):
+    def make_template_file(self, templates_dir):
         '''
         Create intial template file.
         '''
-        open(os.path.join(self.templates_dir, 'index.html'), 'w').close()
+        open(os.path.join(templates_dir, 'index.html'), 'w').close()
         print('Created index template...\n')
 
     def make_project(self):
-        self.make_folders()
-        self.make_run_file()
-        self.make_app_init_file()
-        self.make_template_file()
+        self.make_folders(self.pkg_dir, self.templates_dir, self.static_dir)
+        self.make_run_file(self.proj_folder)
+        self.make_app_init_file(self.pkg_dir)
+        self.make_template_file(self.templates_dir)
         if not self.use_blueprints:
-            self.make_views_file()
+            self.make_views_file(self.pkg_dir)
         else:
-            self.make_bp_init_file()
+            self.make_bp_init_file(self.bp_dir)
         if self.include_configs:
-            self.make_config_file()
+            self.make_config_file(self.pkg_dir)
         if self.include_forms:
-            self.make_forms_file()
+            self.make_forms_file(self.pkg_dir)
         if self.include_models:
-            self.make_models_file()
+            self.make_models_file(self.pkg_dir)
         print('Project created.')
 
 
