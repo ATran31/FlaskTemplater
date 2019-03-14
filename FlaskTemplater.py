@@ -23,30 +23,24 @@
 #             index.html
 
 import os
-from sys import argv
+import argparse
 
 
 class FlaskTemplater:
     def __init__(self):
-        try:
-            self.proj_folder = argv[1]
-        except IndexError:
-            self.proj_folder = os.path.dirname(os.path.realpath(__file__))
+        parser = argparse.ArgumentParser()
+        parser.add_argument("proj_folder", nargs="?", default=os.path.dirname(os.path.realpath(__file__)), help="The folder where this project will be initialized. Uses the same directory as this script if no project folder is given.")
+        parser.add_argument("-b", "--use-blueprints", action="store_true", help="Include a Flask blueprints template.")
+        parser.add_argument("-c", "--include-configs", action="store_true", help="Include a Flask configuration file template.")
+        parser.add_argument("-f", "--include-forms", action="store_true", help="Include a Flask form template.")
+        parser.add_argument("-m", "--include-models", action="store_true", help="Include a database model definition template.")
+        args = parser.parse_args()
 
-        self.use_blueprints = False
-        self.include_configs = False
-        self.include_forms = False
-        self.include_models = False
-
-        for arg in argv:
-            if arg == '--use-blueprints':
-                self.use_blueprints = True
-            elif arg == '--include-configs':
-                self.include_configs = True
-            elif arg == '--include-forms':
-                self.include_forms = True
-            elif arg == '--include-models':
-                self.include_models = True
+        self.proj_folder = args.proj_folder
+        self.use_blueprints = args.use_blueprints
+        self.include_configs = args.include_configs
+        self.include_forms = args.include_forms
+        self.include_models = args.include_models
 
         self.pkg_dir = os.path.join(self.proj_folder, 'app_pkg')
         self.templates_dir = os.path.join(self.pkg_dir, 'templates')
