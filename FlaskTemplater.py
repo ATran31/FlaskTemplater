@@ -24,6 +24,7 @@
 
 import os
 import argparse
+import shutil
 
 
 class ProjectTemplate:
@@ -35,10 +36,12 @@ class ProjectTemplate:
             parser.add_argument("-c", "--include-configs", action="store_true", help="Include a Flask configuration file template.")
             parser.add_argument("-f", "--include-forms", action="store_true", help="Include a Flask form template.")
             parser.add_argument("-m", "--include-models", action="store_true", help="Include a database model definition template.")
+            parser.add_argument("-w", "--overwrite", action="store_true", help="Allow project folder to be overwritten if it exists.")
 
             args = parser.parse_args()
 
             self.project_folder = args.project_folder
+            self.overwrite = args.overwrite
             self.use_blueprints = args.use_blueprints
             self.include_configs = args.include_configs
             self.include_forms = args.include_forms
@@ -50,9 +53,10 @@ class ProjectTemplate:
             self.include_configs = False
             self.include_forms = False
             self.include_models = False
+            self.overwrite = False
             for k, v in kwargs.items():
                 # ignore irrelevant args
-                if k in ['project_folder', 'use_blueprints', 'include_models', 'include_configs', 'include_forms']:
+                if k in ['project_folder', 'use_blueprints', 'include_models', 'include_configs', 'include_forms', 'overwrite']:
                     setattr(self, k, v)
 
             # if project_folder is not defined, default to current directory
@@ -65,7 +69,9 @@ class ProjectTemplate:
         self.bp_dir = os.path.join(self.pkg_dir, 'my_blueprint')
 
     def make_folders(self, pkg_dir, templates_dir, static_dir):
-        # create the main package folder
+        # overwrite existing folders if they exist
+        if self.overwrite and os.path.exists(pkg_dir):
+            shutil.rmtree(pkg_dir)
         os.makedirs(pkg_dir)
         # create templates folder
         os.mkdir(templates_dir)

@@ -1,7 +1,5 @@
 #### Description
-Creates a Flask project in a user specified folder.
-Creates in the script directory if user does not supply a project path.
-It does not create a virtualenv or install any dependencies.
+Creates necessary files and folders for a Flask project in a user specified folder. It does not create a virtual environment or install any dependencies.
 
 #### Use as a script
 ```
@@ -19,6 +17,7 @@ optional arguments:
                         Include a Flask configuration file template.
   -f, --include-forms   Include a Flask form template.
   -m, --include-models  Include a database model definition template.
+  -w, --overwrite       Allow project folder to be overwritten if it exists.
 ```
 #### Use as a module
 The `script_mode` argument is REQUIRED and must be set to `False` when using as a module. All other arguments are optional. If `project_folder` argument is not specified, the output directory the same directory as the script.
@@ -31,7 +30,9 @@ my_project = ProjectTemplate(script_mode=False, \
     use_blueprints=True, \
     include_models=True, \
     include_forms=True, \
-    include_configs=True)
+    include_configs=True, \
+    allow_overwrite=True)
+
 my_project.make_project()
 
 ```
