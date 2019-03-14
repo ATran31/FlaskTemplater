@@ -30,7 +30,7 @@ class ProjectTemplate:
     def __init__(self, script_mode=True, **kwargs):
         if script_mode:
             parser = argparse.ArgumentParser()
-            parser.add_argument("proj_folder", nargs="?", default=os.path.dirname(os.path.realpath(__file__)), help="The folder where this project will be initialized. Uses the same directory as this script if no project folder is given.")
+            parser.add_argument("project_folder", nargs="?", default=os.path.dirname(os.path.realpath(__file__)), help="The folder where this project will be initialized. Uses the same directory as this script if no project folder is given.")
             parser.add_argument("-b", "--use-blueprints", action="store_true", help="Include a Flask blueprints template.")
             parser.add_argument("-c", "--include-configs", action="store_true", help="Include a Flask configuration file template.")
             parser.add_argument("-f", "--include-forms", action="store_true", help="Include a Flask form template.")
@@ -38,7 +38,7 @@ class ProjectTemplate:
 
             args = parser.parse_args()
 
-            self.proj_folder = args.proj_folder
+            self.project_folder = args.project_folder
             self.use_blueprints = args.use_blueprints
             self.include_configs = args.include_configs
             self.include_forms = args.include_forms
@@ -52,14 +52,14 @@ class ProjectTemplate:
             self.include_models = False
             for k, v in kwargs.items():
                 # ignore irrelevant args
-                if k in ['proj_folder', 'use_blueprints', 'include_models', 'include_configs', 'include_forms']:
+                if k in ['project_folder', 'use_blueprints', 'include_models', 'include_configs', 'include_forms']:
                     setattr(self, k, v)
 
-            # if proj_folder is not defined, default to current directory
-            if not hasattr(self, 'proj_folder'):
-                self.proj_folder = os.path.dirname(os.path.realpath(__file__))
+            # if project_folder is not defined, default to current directory
+            if not hasattr(self, 'project_folder'):
+                self.project_folder = os.path.dirname(os.path.realpath(__file__))
 
-        self.pkg_dir = os.path.join(self.proj_folder, 'app_pkg')
+        self.pkg_dir = os.path.join(self.project_folder, 'app_pkg')
         self.templates_dir = os.path.join(self.pkg_dir, 'templates')
         self.static_dir = os.path.join(self.pkg_dir, 'static')
         self.bp_dir = os.path.join(self.pkg_dir, 'my_blueprint')
@@ -86,8 +86,8 @@ class ProjectTemplate:
 
         print('Created project folders...\n')
 
-    def make_run_file(self, proj_folder):
-        with open(os.path.join(proj_folder, 'run.py'), 'w') as file:
+    def make_run_file(self, project_folder):
+        with open(os.path.join(project_folder, 'run.py'), 'w') as file:
             run_file = f'from app_pkg import app\n\n' \
                 f'# uncomment below to run in development mode, no connection from other machines allowed\n' \
                 f'#app.run(debug=True)\n\n' \
@@ -217,7 +217,7 @@ class ProjectTemplate:
 
     def make_project(self):
         self.make_folders(self.pkg_dir, self.templates_dir, self.static_dir)
-        self.make_run_file(self.proj_folder)
+        self.make_run_file(self.project_folder)
         self.make_app_init_file(self.pkg_dir)
         self.make_template_file(self.templates_dir)
         if not self.use_blueprints:
