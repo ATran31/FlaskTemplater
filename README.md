@@ -1,32 +1,52 @@
 #### Description
-Creates a Flask project in a user specified folder.  
-Creates in the script directory if user does not supply a project path.  
-It does not create a virtualenv or install any dependencies. 
+Creates a Flask project in a user specified folder.
+Creates in the script directory if user does not supply a project path.
+It does not create a virtualenv or install any dependencies.
 
-#### Usage  
-Create a generic project
+#### Usage
+Get help with usage and options:
+
+`python FlaskTemplater.py -h`
+
+Create a generic project:
 
 `python FlaskTemplater.py /path/to/project`
 
 ##### Options
-Include a sample blueprint
+###### Include a sample blueprint
 
-`python FlaskTemplater.py /path/to/project --use-blueprints`
+`python FlaskTemplater.py --use-blueprints /path/to/project`
 
-Include model definitions
+or using short form
 
-`python FlaskTemplater.py /path/to/project --include-models`
+`python FlaskTemplater.py -b /path/to/project`
 
-Include form definitions
+###### Include model definitions
 
-`python FlaskTemplater.py /path/to/project --include-forms`
+`python FlaskTemplater.py --include-models /path/to/project`
 
-Include a configuration file
+or using short form
 
-`python FlaskTemplater.py /path/to/project --include-configs`
+`python FlaskTemplater.py -m /path/to/project`
 
- 
-#### The output folder structure is as follows:  
+###### Include form definitions
+
+`python FlaskTemplater.py --include-forms /path/to/project`
+
+or using short form
+
+`python FlaskTemplater.py -f /path/to/project`
+
+###### Include a configuration file
+
+`python FlaskTemplater.py --include-configs /path/to/project`
+
+or using short form
+
+`python FlaskTemplater.py -c /path/to/project`
+
+
+#### The output folder structure is as follows:
 ```
 │   run.py
 └───app_pkg
