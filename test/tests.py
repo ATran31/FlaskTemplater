@@ -21,37 +21,37 @@ class TestMakeFolders(unittest.TestCase):
 
     def test_make_folders_no_bp(self):
         # test without & without blueprints
-        self.project.make_folders('temp/app_pkg', 'temp/app_pkg/templates', 'temp/app_pkg/static')
+        self.project.make_folders(self.project.pkg_dir, self.project.templates_dir, self.project.static_dir)
 
         # check that package folder exists
-        self.assertTrue(os.path.exists('temp/app_pkg'))
+        self.assertTrue(os.path.exists(self.project.pkg_dir))
         # check that global templates folder exists
-        self.assertTrue(os.path.exists('temp/app_pkg/templates'))
+        self.assertTrue(os.path.exists(self.project.templates_dir))
         # check that global static folder exists
-        self.assertTrue(os.path.exists('temp/app_pkg/static'))
+        self.assertTrue(os.path.exists(self.project.static_dir))
 
     def test_make_folders_with_bp(self):
         # test with blueprints
         self.project.use_blueprints = True
-        self.project.make_folders('temp/app_pkg', 'temp/app_pkg/templates', 'temp/app_pkg/static')
+        self.project.make_folders(self.project.pkg_dir, self.project.templates_dir, self.project.static_dir)
 
         # check that package folder exists
-        self.assertTrue(os.path.exists('temp/app_pkg'))
+        self.assertTrue(os.path.exists(self.project.pkg_dir))
         # check that global templates folder exists
-        self.assertTrue(os.path.exists('temp/app_pkg/templates'))
+        self.assertTrue(os.path.exists(self.project.templates_dir))
         # check that global static folder exists
-        self.assertTrue(os.path.exists('temp/app_pkg/static'))
+        self.assertTrue(os.path.exists(self.project.static_dir))
 
         # check that blueprint folder exists
-        self.assertTrue(os.path.exists('temp/app_pkg/my_blueprint'))
+        self.assertTrue(os.path.exists(self.project.bp_dir))
         # check that blueprint templates folder exists
-        self.assertTrue(os.path.exists('temp/app_pkg/my_blueprint/static'))
+        self.assertTrue(os.path.exists(os.path.join(self.project.bp_dir, 'templates')))
         # check that blueprint static folder exists
-        self.assertTrue(os.path.exists('temp/app_pkg/my_blueprint/templates'))
+        self.assertTrue(os.path.exists(os.path.join(self.project.bp_dir, 'static')))
         # check that css folder exists in blueprint
-        self.assertTrue(os.path.exists('temp/app_pkg/my_blueprint/static/css'))
+        self.assertTrue(os.path.exists(os.path.join(self.project.bp_dir, 'static/css')))
         # check that js folder exists in blueprint
-        self.assertTrue(os.path.exists('temp/app_pkg/my_blueprint/static/js'))
+        self.assertTrue(os.path.exists(os.path.join(self.project.bp_dir, 'static/js')))
 
 
 class TestMakeRunFile(unittest.TestCase):
@@ -59,6 +59,8 @@ class TestMakeRunFile(unittest.TestCase):
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
+        # create project instance
+        self.project = PT(script_mode=False, project_folder='temp')
 
     def tearDown(self):
         # delete temp directory and all files within
@@ -73,6 +75,8 @@ class TestMakeAppInitFile(unittest.TestCase):
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
+        # create project instance
+        self.project = PT(script_mode=False, project_folder='temp')
 
     def tearDown(self):
         # delete temp directory and all files within
@@ -87,6 +91,8 @@ class TestMakeBlueprintInitFile(unittest.TestCase):
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
+        # create project instance
+        self.project = PT(script_mode=False, project_folder='temp')
 
     def tearDown(self):
         # delete temp directory and all files within
@@ -101,6 +107,8 @@ class TestMakeConfigFile(unittest.TestCase):
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
+        # create project instance
+        self.project = PT(script_mode=False, project_folder='temp')
 
     def tearDown(self):
         # delete temp directory and all files within
@@ -115,6 +123,8 @@ class TestMakeFormsFile(unittest.TestCase):
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
+        # create project instance
+        self.project = PT(script_mode=False, project_folder='temp')
 
     def tearDown(self):
         # delete temp directory and all files within
@@ -129,6 +139,8 @@ class TestMakeModelsFile(unittest.TestCase):
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
+        # create project instance
+        self.project = PT(script_mode=False, project_folder='temp')
 
     def tearDown(self):
         # delete temp directory and all files within
@@ -143,6 +155,8 @@ class TestMakeViewsFile(unittest.TestCase):
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
+        # create project instance
+        self.project = PT(script_mode=False, project_folder='temp')
 
     def tearDown(self):
         # delete temp directory and all files within
@@ -157,6 +171,8 @@ class TestMakeTemplateFile(unittest.TestCase):
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
+        # create project instance
+        self.project = PT(script_mode=False, project_folder='temp')
 
     def tearDown(self):
         # delete temp directory and all files within
