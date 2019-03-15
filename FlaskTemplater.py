@@ -29,6 +29,8 @@ import shutil
 
 class ProjectTemplate:
     def __init__(self, script_mode=True, **kwargs):
+        self.script_mode = script_mode
+
         if script_mode:
             parser = argparse.ArgumentParser()
             parser.add_argument("project_folder", nargs="?", default=os.path.dirname(os.path.realpath(__file__)), help="The folder where this project will be initialized. Uses the same directory as this script if no project folder is given.")
@@ -90,7 +92,8 @@ class ProjectTemplate:
                         bp_dir = os.path.join(pkg_dir, 'my_blueprint')
                         os.makedirs(os.path.join(bp_dir, 'static', fol))
 
-        print('Created project folders...\n')
+        if self.script_mode:
+            print('Created project folders...\n')
 
     def make_run_file(self, project_folder):
         with open(os.path.join(project_folder, 'run.py'), 'w') as file:
@@ -100,6 +103,9 @@ class ProjectTemplate:
                 f'# uncomment below to allow connection from other devices on local network\n' \
                 f'#app.run(host=\'0.0.0.0\', threaded=True, debug=True)\n'
             file.write(run_file)
+
+        if self.script_mode:
+            print('Created run file...\n')
 
     def make_app_init_file(self, pkg_dir):
         '''
@@ -127,7 +133,9 @@ class ProjectTemplate:
                     f'#from app_pkg.my_blueprint import bp as my_bp\n' \
                     f'#app.register_blueprint(my_bp)\n'
                 file.write(blueprint)
-        print('Created app __init__ file...\n')
+
+        if self.script_mode:
+            print('Created app __init__ file...\n')
 
     def make_bp_init_file(self, bp_dir):
         '''
@@ -138,6 +146,8 @@ class ProjectTemplate:
                 f'# This blueprint contains my_blueprint page related components.\n' \
                 f'bp = Blueprint(\'my_blueprint\', __name__, template_folder=\'templates\', static_folder=\'static\', static_url_path=\'/my_blueprint/static\')\n'
             file.write(file_content)
+
+        if self.script_mode:
             print('Created blueprint __init__ file...\n')
 
     def make_config_file(self, pkg_dir):
@@ -161,7 +171,9 @@ class ProjectTemplate:
                 f'# define redis connection\n' \
                 f'#REDIS_URL = os.environ.get(\'REDIS_URL\')'
             file.write(file_content)
-        print('Created configuration file...\n')
+
+        if self.script_mode:
+            print('Created configuration file...\n')
 
     def make_forms_file(self, pkg_dir):
         '''
@@ -177,7 +189,9 @@ class ProjectTemplate:
                 f'#    submit = SubmitField("Sign In")\n\n' \
                 f'# define other classes...\n'
             file.write(file_content)
-        print('Created forms file...\n')
+
+        if self.script_mode:
+            print('Created forms file...\n')
 
     def make_models_file(self, pkg_dir):
         '''
@@ -193,7 +207,9 @@ class ProjectTemplate:
                 f'#    def __repr__(self):\n' \
                 f'#        return \'<repr-str{{}}>\'.format(self.some-field)\n'
             file.write(file_content)
-        print('Created models file...\n')
+
+        if self.script_mode:
+            print('Created models file...\n')
 
     def make_views_file(self, pkg_dir):
         '''
@@ -212,14 +228,18 @@ class ProjectTemplate:
                 f'#def load_user(email):\n' \
                 f'#    return User.query.filter_by(email=email).first()\n'
             file.write(file_content)
-        print('Created views file...\n')
+
+        if self.script_mode:
+            print('Created views file...\n')
 
     def make_template_file(self, templates_dir):
         '''
         Create intial template file.
         '''
         open(os.path.join(templates_dir, 'index.html'), 'w').close()
-        print('Created index template...\n')
+
+        if self.script_mode:
+            print('Created index template...\n')
 
     def make_project(self):
         self.make_folders(self.pkg_dir, self.templates_dir, self.static_dir)
@@ -236,7 +256,8 @@ class ProjectTemplate:
             self.make_forms_file(self.pkg_dir)
         if self.include_models:
             self.make_models_file(self.pkg_dir)
-        print('Project created.')
+        if self.script_mode:
+            print('Project created...\n')
 
 
 if __name__ == '__main__':
