@@ -3,6 +3,9 @@
 #### Description
 Creates necessary files and folders for a Flask project in a user specified folder. It does not create a virtual environment or install any dependencies.
 
+#### Requirements
+Requires Python >= 3.6
+
 #### Use as a script
 ```
 usage: FlaskTemplater.py [-h] [-b] [-c] [-f] [-m] [project_folder]
