@@ -15,9 +15,8 @@ class TestMakeFolders(unittest.TestCase):
     def tearDown(self):
         # delete temp directory and all files within
         shutil.rmtree('temp')
-
         # delete the project instance
-        delattr(self, 'project')
+        del self.project
 
     def test_make_folders_with_bp(self):
         # test with blueprints
@@ -54,6 +53,8 @@ class TestMakeRunFile(unittest.TestCase):
     def tearDown(self):
         # delete temp directory and all files within
         shutil.rmtree('temp')
+        # delete the project instance
+        del self.project
 
     def test_make_run_file(self):
         pass
@@ -70,6 +71,8 @@ class TestMakeAppInitFile(unittest.TestCase):
     def tearDown(self):
         # delete temp directory and all files within
         shutil.rmtree('temp')
+        # delete the project instance
+        del self.project
 
     def test_make_app_init_file(self):
         pass
@@ -86,6 +89,8 @@ class TestMakeBlueprintInitFile(unittest.TestCase):
     def tearDown(self):
         # delete temp directory and all files within
         shutil.rmtree('temp')
+        # delete the project instance
+        del self.project
 
     def test_make_blueprint_init_file(self):
         pass
@@ -102,6 +107,8 @@ class TestMakeConfigFile(unittest.TestCase):
     def tearDown(self):
         # delete temp directory and all files within
         shutil.rmtree('temp')
+        # delete the project instance
+        del self.project
 
     def test_make_config_file(self):
         pass
@@ -118,6 +125,8 @@ class TestMakeFormsFile(unittest.TestCase):
     def tearDown(self):
         # delete temp directory and all files within
         shutil.rmtree('temp')
+        # delete the project instance
+        del self.project
 
     def test_make_forms_file(self):
         pass
@@ -134,6 +143,8 @@ class TestMakeModelsFile(unittest.TestCase):
     def tearDown(self):
         # delete temp directory and all files within
         shutil.rmtree('temp')
+        # delete the project instance
+        del self.project
 
     def test_make_models_file(self):
         pass
@@ -150,6 +161,8 @@ class TestMakeViewsFile(unittest.TestCase):
     def tearDown(self):
         # delete temp directory and all files within
         shutil.rmtree('temp')
+        # delete the project instance
+        del self.project
 
     def test_make_views_file(self):
         pass
@@ -166,6 +179,8 @@ class TestMakeTemplateFile(unittest.TestCase):
     def tearDown(self):
         # delete temp directory and all files within
         shutil.rmtree('temp')
+        # delete the project instance
+        del self.project
 
     def test_make_template_file(self):
         pass
