@@ -10,7 +10,7 @@ class TestMakeFolders(unittest.TestCase):
         # create temp directory to store outputs
         os.mkdir('temp')
         # create project instance
-        self.project = PT(script_mode=False)
+        self.project = PT(script_mode=False, project_folder='temp')
 
     def tearDown(self):
         # delete temp directory and all files within
@@ -52,7 +52,6 @@ class TestMakeFolders(unittest.TestCase):
         self.assertTrue(os.path.exists('temp/app_pkg/my_blueprint/static/css'))
         # check that js folder exists in blueprint
         self.assertTrue(os.path.exists('temp/app_pkg/my_blueprint/static/js'))
-
 
 
 class TestMakeRunFile(unittest.TestCase):
