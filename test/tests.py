@@ -19,17 +19,6 @@ class TestMakeFolders(unittest.TestCase):
         # delete the project instance
         delattr(self, 'project')
 
-    def test_make_folders_no_bp(self):
-        # test without & without blueprints
-        self.project.make_folders(self.project.pkg_dir, self.project.templates_dir, self.project.static_dir)
-
-        # check that package folder exists
-        self.assertTrue(os.path.exists(self.project.pkg_dir))
-        # check that global templates folder exists
-        self.assertTrue(os.path.exists(self.project.templates_dir))
-        # check that global static folder exists
-        self.assertTrue(os.path.exists(self.project.static_dir))
-
     def test_make_folders_with_bp(self):
         # test with blueprints
         self.project.use_blueprints = True
