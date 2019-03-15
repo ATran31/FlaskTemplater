@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/ATran31/flask-templater.svg?branch=master)](https://travis-ci.com/ATran31/flask-templater)
+
 #### Description
 Creates necessary files and folders for a Flask project in a user specified folder. It does not create a virtual environment or install any dependencies.
 
