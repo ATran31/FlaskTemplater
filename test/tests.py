@@ -5,7 +5,7 @@ import shutil
 
 
 class TestMakeFolders(unittest.TestCase):
-    # TODO test make folders
+    # test make folders
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
@@ -43,7 +43,7 @@ class TestMakeFolders(unittest.TestCase):
 
 
 class TestMakeRunFile(unittest.TestCase):
-    # TODO test make run file
+    # test make run file
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
@@ -57,11 +57,13 @@ class TestMakeRunFile(unittest.TestCase):
         del self.project
 
     def test_make_run_file(self):
-        pass
+        self.project.use_blueprints = True
+        self.project.make_run_file(self.project.project_folder)
+        self.assertTrue(os.path.isfile(os.path.join(self.project.project_folder, 'run.py')))
 
 
 class TestMakeAppInitFile(unittest.TestCase):
-    # TODO test make app __init__ file
+    # test make app __init__ file
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
@@ -75,11 +77,13 @@ class TestMakeAppInitFile(unittest.TestCase):
         del self.project
 
     def test_make_app_init_file(self):
-        pass
+        self.project.make_folders(self.project.pkg_dir, self.project.templates_dir, self.project.static_dir)
+        self.project.make_app_init_file(self.project.pkg_dir)
+        self.assertTrue(os.path.isfile(os.path.join(self.project.pkg_dir, '__init__.py')))
 
 
 class TestMakeBlueprintInitFile(unittest.TestCase):
-    # TODO test make blueprint __init__ file
+    # test make blueprint __init__ file
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
@@ -93,11 +97,14 @@ class TestMakeBlueprintInitFile(unittest.TestCase):
         del self.project
 
     def test_make_blueprint_init_file(self):
-        pass
+        self.project.use_blueprints = True
+        self.project.make_folders(self.project.pkg_dir, self.project.templates_dir, self.project.static_dir)
+        self.project.make_bp_init_file(self.project.bp_dir)
+        self.assertTrue(os.path.isfile(os.path.join(self.project.bp_dir, '__init__.py')))
 
 
 class TestMakeConfigFile(unittest.TestCase):
-    # TODO test make config file
+    # test make config file
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
@@ -111,11 +118,13 @@ class TestMakeConfigFile(unittest.TestCase):
         del self.project
 
     def test_make_config_file(self):
-        pass
+        self.project.make_folders(self.project.pkg_dir, self.project.templates_dir, self.project.static_dir)
+        self.project.make_config_file(self.project.pkg_dir)
+        self.assertTrue(os.path.isfile(os.path.join(self.project.pkg_dir, 'config.py')))
 
 
 class TestMakeFormsFile(unittest.TestCase):
-    # TODO test make forms file
+    # test make forms file
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
@@ -129,11 +138,13 @@ class TestMakeFormsFile(unittest.TestCase):
         del self.project
 
     def test_make_forms_file(self):
-        pass
+        self.project.make_folders(self.project.pkg_dir, self.project.templates_dir, self.project.static_dir)
+        self.project.make_forms_file(self.project.pkg_dir)
+        self.assertTrue(os.path.isfile(os.path.join(self.project.pkg_dir, 'forms.py')))
 
 
 class TestMakeModelsFile(unittest.TestCase):
-    # TODO test make models file
+    # test make models file
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
@@ -147,11 +158,13 @@ class TestMakeModelsFile(unittest.TestCase):
         del self.project
 
     def test_make_models_file(self):
-        pass
+        self.project.make_folders(self.project.pkg_dir, self.project.templates_dir, self.project.static_dir)
+        self.project.make_models_file(self.project.pkg_dir)
+        self.assertTrue(os.path.isfile(os.path.join(self.project.pkg_dir, 'models.py')))
 
 
 class TestMakeViewsFile(unittest.TestCase):
-    # TODO test make views file
+    # test make views file
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
@@ -165,11 +178,13 @@ class TestMakeViewsFile(unittest.TestCase):
         del self.project
 
     def test_make_views_file(self):
-        pass
+        self.project.make_folders(self.project.pkg_dir, self.project.templates_dir, self.project.static_dir)
+        self.project.make_views_file(self.project.pkg_dir)
+        self.assertTrue(os.path.isfile(os.path.join(self.project.pkg_dir, 'views.py')))
 
 
 class TestMakeTemplateFile(unittest.TestCase):
-    # TODO test make app template
+    # test make app template
     def setUp(self):
         # create temp directory to store outputs
         os.mkdir('temp')
@@ -183,4 +198,6 @@ class TestMakeTemplateFile(unittest.TestCase):
         del self.project
 
     def test_make_template_file(self):
-        pass
+        self.project.make_folders(self.project.pkg_dir, self.project.templates_dir, self.project.static_dir)
+        self.project.make_template_file(self.project.templates_dir)
+        self.assertTrue(os.path.isfile(os.path.join(self.project.templates_dir, 'index.html')))
